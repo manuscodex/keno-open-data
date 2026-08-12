@@ -1,0 +1,2685 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kenowinningnumbers.com/data/keno-games.schema.json",
+  "title": "Keno Winning Numbers open game catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "version",
+    "license",
+    "recordCount",
+    "catalog",
+    "sources",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "version": {
+      "type": "string",
+      "format": "date"
+    },
+    "license": {
+      "const": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "recordCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "jurisdictions",
+        "regulatoryAuthorities",
+        "operators",
+        "products",
+        "offerings",
+        "rule_versions",
+        "draw_schedules"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "3.0.0"
+        },
+        "jurisdictions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/jurisdiction"
+          }
+        },
+        "regulatoryAuthorities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/regulatoryAuthority"
+          }
+        },
+        "operators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/operator"
+          }
+        },
+        "products": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/product"
+          }
+        },
+        "offerings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/offering"
+          }
+        },
+        "rule_versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ruleVersion"
+          }
+        },
+        "draw_schedules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/drawSchedule"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "verification": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/verification"
+      }
+    }
+  },
+  "$defs": {
+    "unknownAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unknown_reason",
+        "source_ids",
+        "observed_on"
+      ],
+      "properties": {
+        "value": {
+          "type": "null"
+        },
+        "unknown_reason": {
+          "enum": [
+            "not_published",
+            "not_applicable",
+            "not_found",
+            "under_review"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        },
+        "observed_on": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "stringAssertion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source_ids",
+            "observed_on"
+          ],
+          "properties": {
+            "value": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/unknownAssertion"
+        }
+      ]
+    },
+    "urlAssertion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source_ids",
+            "observed_on"
+          ],
+          "properties": {
+            "value": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/unknownAssertion"
+        }
+      ]
+    },
+    "positiveIntegerAssertion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source_ids",
+            "observed_on"
+          ],
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/unknownAssertion"
+        }
+      ]
+    },
+    "jurisdiction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "country_code",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "kind": {
+              "const": "country"
+            },
+            "country_code": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "name": {
+              "$ref": "#/$defs/stringAssertion"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "country_code",
+            "subdivision_code",
+            "parent_jurisdiction_id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "kind": {
+              "const": "subnational"
+            },
+            "country_code": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "subdivision_code": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}-[A-Z0-9]{1,3}$"
+            },
+            "parent_jurisdiction_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "name": {
+              "$ref": "#/$defs/stringAssertion"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "country_code",
+            "member_jurisdiction_ids",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "kind": {
+              "const": "multi_region"
+            },
+            "country_code": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "member_jurisdiction_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "minItems": 2,
+              "uniqueItems": true
+            },
+            "name": {
+              "$ref": "#/$defs/stringAssertion"
+            }
+          }
+        }
+      ]
+    },
+    "operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "legal_name",
+        "short_name",
+        "official_website",
+        "jurisdiction_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "legal_name": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "short_name": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "official_website": {
+          "$ref": "#/$defs/urlAssertion"
+        },
+        "jurisdiction_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "regulatoryAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "shortName",
+        "officialWebsite",
+        "jurisdictionIds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "kind": {
+          "enum": [
+            "named_authority",
+            "jurisdictional_authority_category",
+            "government_oversight"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "shortName": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "officialWebsite": {
+          "$ref": "#/$defs/urlAssertion"
+        },
+        "jurisdictionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "game_type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "game_type": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "source_ids",
+                "observed_on"
+              ],
+              "properties": {
+                "value": {
+                  "enum": [
+                    "official_lottery_keno",
+                    "online_lottery_keno"
+                  ]
+                },
+                "source_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                "observed_on": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/unknownAssertion"
+            }
+          ]
+        }
+      }
+    },
+    "offering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "slug",
+        "product_id",
+        "jurisdiction_ids",
+        "operator_ids",
+        "regulatoryAuthorityIds",
+        "publication_status",
+        "availability_status",
+        "region_name",
+        "official_website",
+        "official_results_source",
+        "official_rules_source",
+        "top_prize"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "jurisdiction_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "operator_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "regulatoryAuthorityIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "publication_status": {
+          "const": "index"
+        },
+        "availability_status": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "source_ids",
+                "observed_on"
+              ],
+              "properties": {
+                "value": {
+                  "enum": [
+                    "active",
+                    "discontinued",
+                    "unknown"
+                  ]
+                },
+                "source_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                "observed_on": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/unknownAssertion"
+            }
+          ]
+        },
+        "region_name": {
+          "$ref": "#/$defs/stringAssertion"
+        },
+        "official_website": {
+          "$ref": "#/$defs/urlAssertion"
+        },
+        "official_results_source": {
+          "$ref": "#/$defs/urlAssertion"
+        },
+        "official_rules_source": {
+          "$ref": "#/$defs/urlAssertion"
+        },
+        "top_prize": {
+          "$ref": "#/$defs/stringAssertion"
+        }
+      }
+    },
+    "pickSelection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "count"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fixed"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "minimum",
+            "maximum"
+          ],
+          "properties": {
+            "kind": {
+              "const": "range"
+            },
+            "minimum": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maximum": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "counts"
+          ],
+          "properties": {
+            "kind": {
+              "const": "set"
+            },
+            "counts": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          }
+        }
+      ]
+    },
+    "effectivePeriod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid_from",
+        "valid_through"
+      ],
+      "properties": {
+        "valid_from": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_through": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ruleVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "offering_id",
+        "version_label",
+        "effective_period",
+        "number_pool",
+        "numbers_drawn",
+        "picks_allowed"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "offering_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "version_label": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_period": {
+          "$ref": "#/$defs/effectivePeriod"
+        },
+        "number_pool": {
+          "$ref": "#/$defs/positiveIntegerAssertion"
+        },
+        "numbers_drawn": {
+          "$ref": "#/$defs/positiveIntegerAssertion"
+        },
+        "picks_allowed": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "source_ids",
+                "observed_on"
+              ],
+              "properties": {
+                "value": {
+                  "$ref": "#/$defs/pickSelection"
+                },
+                "source_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                "observed_on": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/unknownAssertion"
+            }
+          ]
+        }
+      }
+    },
+    "drawOccurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "weekday",
+        "local_time"
+      ],
+      "properties": {
+        "weekday": {
+          "enum": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
+        },
+        "local_time": {
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+        }
+      }
+    },
+    "drawSchedule": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "occurrences"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "fixed_times"
+            },
+            "occurrences": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/drawOccurrence"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "every_minutes",
+            "weekdays",
+            "window_start_local_time",
+            "window_end_local_time"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "interval"
+            },
+            "every_minutes": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "weekdays": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "monday",
+                  "tuesday",
+                  "wednesday",
+                  "thursday",
+                  "friday",
+                  "saturday",
+                  "sunday"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "window_start_local_time": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "window_end_local_time": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "local_time"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "daily"
+            },
+            "local_time": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "draws_per_day",
+            "local_times"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "multiple_daily"
+            },
+            "draws_per_day": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "integer",
+                      "minimum": 2
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "local_times": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "minItems": 2,
+                      "uniqueItems": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "weekday",
+            "local_time"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "weekly"
+            },
+            "weekday": {
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            },
+            "local_time": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind",
+            "occurrences"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "multiple_weekly"
+            },
+            "occurrences": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/drawOccurrence"
+              },
+              "minItems": 2,
+              "uniqueItems": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "on_demand"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "offering_id",
+            "effective_period",
+            "source_ids",
+            "observed_on",
+            "description",
+            "timezone",
+            "kind"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "offering_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "effective_period": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "valid_from",
+                "valid_through"
+              ],
+              "properties": {
+                "valid_from": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "valid_through": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "observed_on": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "source_ids",
+                    "observed_on"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      },
+                      "uniqueItems": true,
+                      "minItems": 1
+                    },
+                    "observed_on": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/$defs/unknownAssertion"
+                }
+              ]
+            },
+            "timezone": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "value",
+                    "unknown_reason"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    },
+                    "unknown_reason": {
+                      "enum": [
+                        "not_published",
+                        "not_applicable",
+                        "not_found",
+                        "under_review"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "const": "descriptive"
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "url",
+        "publisher",
+        "title",
+        "authority",
+        "roles",
+        "language",
+        "accessed_on",
+        "state",
+        "supports"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "enum": [
+            "official_operator",
+            "official_regulator",
+            "government",
+            "secondary_discovery"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "game",
+              "operator",
+              "regulator",
+              "rules",
+              "results"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+        },
+        "accessed_on": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "enum": [
+            "active",
+            "restricted",
+            "unavailable",
+            "superseded"
+          ]
+        },
+        "supports": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "availability_status",
+              "name",
+              "country",
+              "operator",
+              "regulator",
+              "game_type",
+              "number_pool",
+              "numbers_drawn",
+              "picks_allowed",
+              "draw_frequency",
+              "official_website",
+              "official_results_source",
+              "official_rules_source",
+              "top_prize"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "verificationEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "reviewed_on",
+        "reviewer",
+        "method",
+        "status_after",
+        "changed_fields",
+        "source_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "reviewed_on": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "reviewer": {
+          "const": "codex"
+        },
+        "method": {
+          "enum": [
+            "legacy_import",
+            "official_source_review",
+            "reverification"
+          ]
+        },
+        "status_after": {
+          "enum": [
+            "verified",
+            "partly_verified",
+            "unverified"
+          ]
+        },
+        "changed_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "availability_status",
+              "name",
+              "country",
+              "operator",
+              "regulator",
+              "game_type",
+              "number_pool",
+              "numbers_drawn",
+              "picks_allowed",
+              "draw_frequency",
+              "official_website",
+              "official_results_source",
+              "official_rules_source",
+              "top_prize"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offering_id",
+        "game_slug",
+        "status",
+        "last_reviewed_on",
+        "events"
+      ],
+      "properties": {
+        "offering_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "game_slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "partly_verified",
+            "unverified"
+          ]
+        },
+        "last_reviewed_on": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/verificationEvent"
+          }
+        }
+      }
+    }
+  }
+}

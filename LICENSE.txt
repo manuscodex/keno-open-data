@@ -1,0 +1,15 @@
+Keno Winning Numbers Open Dataset
+
+The original compilation, normalized entity relationships, field assertions,
+and metadata in keno-games.json and keno-games.csv are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+
+Suggested attribution:
+Keno Winning Numbers — https://kenowinningnumbers.com/data
+
+This license does not relicense source documents, lottery rules, operator
+websites, trademarks, or third-party content referenced by the dataset.
+Those materials remain subject to their respective owners' rights and terms.
+
+The dataset contains directory metadata, not winning-number draw results.
