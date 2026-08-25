@@ -100,3 +100,35 @@ source.
 
 The packager performs none of the GitHub, Zenodo, Kaggle or directory
 publication actions by itself.
+
+## External publication metadata status
+
+The repository includes prepared metadata for Zenodo (`.zenodo.json`) and
+Kaggle (`dataset-metadata.json`). Both files describe the existing immutable
+`v2026-08-11` payload and keep `https://kenowinningnumbers.com/data` as the
+only canonical human-readable dataset page.
+
+**Status: not published. Publication requires separate owner approval.** The
+metadata files do not create an account, deposit, DOI, Kaggle dataset or any
+other external record. Do not move or recreate the existing `v2026-08-11`
+tag, and do not run an authenticated publication command from this repository
+without that approval.
+
+Pre-publication workflow:
+
+1. Run `node scripts/validate-publication-metadata.mjs --self-test` from a
+   clean checkout. It binds the draft metadata to the exact release version,
+   source Git SHA, manifest, byte counts and SHA-256 checksums.
+2. Confirm that the controlled Zenodo account and the intended Kaggle
+   organization `kenowinningnumbers` are available to the owner. The Kaggle
+   `id` is a prepared organizational target, not evidence that an account or
+   dataset already exists.
+3. Assemble a clean staging directory from only the checksum-verified
+   `v2026-08-11` artifacts and the platform metadata. Never use a working
+   directory containing unverified or unrelated files as an upload source.
+4. Review the platform preview for the organizational creator `Keno Winning
+   Numbers Team`, version `2026-08-11`, CC BY 4.0 and canonical source before
+   any final action.
+5. Publish only after the owner separately approves the exact platform,
+   account, files and final preview. Record the resulting DOI or dataset URL
+   in a later, dedicated metadata update; do not rewrite the release payload.

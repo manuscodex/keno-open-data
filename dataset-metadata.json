@@ -1,0 +1,35 @@
+{
+  "title": "Keno Winning Numbers Open Dataset",
+  "subtitle": "Official Keno catalog metadata — version 2026-08-11",
+  "description": "Version 2026-08-11 of the Keno Winning Numbers Open Dataset, maintained by Keno Winning Numbers Team. It contains normalized lottery Keno offerings, rules, schedules, operators, regulators, source evidence and verification metadata. The canonical dataset source is https://kenowinningnumbers.com/data. Repository: https://github.com/manuscodex/keno-open-data.",
+  "id": "kenowinningnumbers/keno-winning-numbers-open-dataset",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "resources": [
+    {
+      "path": "keno-games.csv",
+      "description": "Deterministic flattened view of 30 verified Keno offerings."
+    },
+    {
+      "path": "keno-games.json",
+      "description": "Normalized entity graph, assertions, sources and verification events."
+    },
+    {
+      "path": "keno-games.schema.json",
+      "description": "Normative JSON Schema for keno-games.json."
+    },
+    {
+      "path": "dataset-manifest.json",
+      "description": "Version, schema, record counts, byte sizes and SHA-256 checksums."
+    },
+    {
+      "path": "LICENSE.txt",
+      "description": "CC BY 4.0 terms and third-party-rights notice."
+    }
+  ],
+  "keywords": ["keno", "lottery", "open data"],
+  "userSpecifiedSources": "Canonical source: https://kenowinningnumbers.com/data\nRepository: https://github.com/manuscodex/keno-open-data\nRelease: https://github.com/manuscodex/keno-open-data/releases/tag/v2026-08-11"
+}
