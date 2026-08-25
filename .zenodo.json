@@ -7,7 +7,7 @@
   ],
   "description": "Version 2026-08-11 of the Keno Winning Numbers Open Dataset: a versioned catalog of official draw-lottery Keno offerings, normalized rules, schedules, operators, regulators, source evidence and verification metadata. The canonical dataset source is https://kenowinningnumbers.com/data.",
   "keywords": ["keno", "lottery", "open data", "regulatory metadata"],
-  "license": "CC-BY-4.0",
+  "license": "cc-by-4.0",
   "publication_date": "2026-08-11",
   "related_identifiers": [
     {
