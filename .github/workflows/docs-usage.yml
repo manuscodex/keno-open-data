@@ -1,0 +1,27 @@
+name: Documentation examples
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: docs-examples-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify unchanged historical release
+        run: sha256sum --check SHA256SUMS
+      - name: Test read-only examples
+        run: python3 -m unittest discover -s examples -p 'test_*.py'
+      - name: Exercise documented commands
+        run: |
+          python3 examples/inspect_dataset.py --mode countries
+          python3 examples/inspect_dataset.py --mode offering --slug pl-multi-multi
+          python3 examples/inspect_dataset.py --mode citation
