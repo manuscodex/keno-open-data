@@ -1,7 +1,15 @@
 # Sample integrity checks and queries
 
-The examples read the canonical public artifacts. Pin a manifest/version for
-reproducible work rather than assuming that the latest file will never change.
+The examples read public catalog artifacts, not winning-number draw results.
+Use one complete package with its matching manifest, schema and checksums; do
+not mix a historical file with a newer live download. A review date or stored
+source state is not a new verification that an operator is unchanged today.
+
+The paths below assume an artifact directory named `keno-open-data`. This can
+be a checked-out repository or an extracted, checksum-verified release package.
+The download section obtains live files; for historical analysis use a
+[versioned release](https://github.com/manuscodex/keno-open-data/releases) instead.
+The existing `v2026-08-11` package remains historical when downloaded today.
 
 ## Download the manifest and primary files
 
@@ -99,6 +107,9 @@ jq --arg country_code "PL" '
 
 ## Resolve the sources used by one offering's verification history
 
+This summarizes review-event sources, not the exact evidence for every field.
+Use the next example when citing one assertion.
+
 ```bash
 jq --arg slug "be-keno" '
   . as $dataset |
@@ -117,6 +128,42 @@ jq --arg slug "be-keno" '
 ' keno-open-data/keno-games.json
 ```
 
+## Trace an exact rule field to its sources
+
+For a game slug, show every exported rule record's `number_pool` assertion and
+only the sources referenced by that assertion. Preserve the full assertion,
+including observation date, optional locator and typed unknowns.
+
+```bash
+jq --arg slug "de-keno" '
+  . as $dataset |
+  ($dataset.catalog.offerings[] | select(.slug == $slug)) as $offering |
+  $dataset.catalog.rule_versions[] |
+  select(.offering_id == $offering.id) |
+  . as $rule |
+  $rule.number_pool as $assertion |
+  {
+    dataset_version: $dataset.version,
+    game_slug: $offering.slug,
+    rule_id: $rule.id,
+    version_label: $rule.version_label,
+    effective_period: $rule.effective_period,
+    number_pool: $assertion,
+    supporting_sources: [
+      $dataset.sources[] as $source |
+      select(($assertion.source_ids | index($source.id)) != null) |
+      $source | {id, title, publisher, url, accessed_on, state}
+    ]
+  }
+' keno-open-data/keno-games.json
+```
+
+This does not choose the first rule in an array as current.
+`effective_period.valid_from` and `valid_through` may be `null`; that does not
+establish current validity. A source's stored `state` is part of the snapshot,
+not a new HTTP check. Its broad support categories or an offering's entire
+verification history do not replace an assertion's exact `source_ids`.
+
 ## Inspect the flattened CSV
 
 With Miller:
@@ -127,18 +174,67 @@ mlr --csv filter '$availability_status == "active"' then \
   keno-open-data/keno-games.csv
 ```
 
-With Python's standard library:
+With Python's standard library, build a country directory. Change the ISO-2
+argument to select another country; do not assume a fixed offering count:
+
+```bash
+python3 - DE <<'PY'
+import csv
+import sys
+
+country = sys.argv[1].upper()
+fields = [
+    "game_slug", "game_name", "country_code", "region", "operator_name",
+    "official_results_source", "last_reviewed_on", "dataset_version",
+]
+writer = csv.writer(sys.stdout, delimiter="\t", lineterminator="\n")
+writer.writerow(fields)
+with open("keno-open-data/keno-games.csv", encoding="utf-8", newline="") as source:
+    for row in csv.DictReader(source):
+        if row["country_code"] == country and row["availability_status"] == "active":
+            writer.writerow([row[field] for field in fields])
+PY
+```
+
+“Active” is the value recorded in this snapshot, not a new availability check.
+An empty link is unavailable information, not proof that no official source
+exists. CSV's `operator_id` represents the primary flattened relation; use JSON
+`operator_ids` for all operator relationships. Use a CSV parser, not splitting
+on commas: quoted names and other cells can contain commas.
+
+## Summarize pool and draw formats
+
+Count recorded active-offering rows by `(number_pool, numbers_drawn)`, keeping
+missing mechanics visible instead of treating empty cells as zero. This is a
+catalog summary, not a winning-probability or payout calculation.
 
 ```bash
 python3 - <<'PY'
 import csv
+from collections import Counter
 
+formats = Counter()
+missing = 0
 with open("keno-open-data/keno-games.csv", encoding="utf-8", newline="") as source:
     for row in csv.DictReader(source):
-        if row["availability_status"] == "active":
-            print(row["game_slug"], row["country_code"], row["last_reviewed_on"])
+        if row["availability_status"] != "active":
+            continue
+        if not row["number_pool"] or not row["numbers_drawn"]:
+            missing += 1
+            continue
+        formats[(int(row["number_pool"]), int(row["numbers_drawn"]))] += 1
+
+print("number_pool\tnumbers_drawn\toffering_rows")
+for (pool, drawn), count in sorted(formats.items()):
+    print(pool, drawn, count, sep="\t")
+print(f"Active rows with missing mechanics: {missing}")
 PY
 ```
+
+Equal pool/draw counts do not imply equal pick allowances, schedules or prize
+rules. Read `picks_allowed` and official rules separately; the human-readable
+CSV pick allowance is not a universal calculation input. These counts describe
+offering rows, not players, traffic or draw results.
 
 Do not infer live results, payout/RTP values or current legal status from fields
 that the schema does not publish.
