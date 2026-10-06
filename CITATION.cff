@@ -4,7 +4,7 @@ title: "Keno Winning Numbers Open Dataset"
 type: dataset
 authors:
   - name: "Keno Winning Numbers"
-version: "2026-08-11"
+version: "2026-10-05"
 url: "https://kenowinningnumbers.com/data"
 license: CC-BY-4.0
 identifiers:
@@ -19,6 +19,6 @@ preferred-citation:
   authors:
     - name: "Keno Winning Numbers"
   title: "Keno Winning Numbers Open Dataset"
-  version: "2026-08-11"
+  version: "2026-10-05"
   url: "https://kenowinningnumbers.com/data"
   license: CC-BY-4.0

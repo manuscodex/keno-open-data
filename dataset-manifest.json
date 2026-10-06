@@ -1,8 +1,8 @@
 {
   "schemaVersion": "3.0.0",
   "datasetSchemaVersion": "3.0.0",
-  "version": "2026-08-11",
-  "gitSha": "13d56868c8c738bfb05da66659d5d27164749885",
+  "version": "2026-10-05",
+  "gitSha": "54bd6cd8b5f2620e3435b48ca9b82de861169e34",
   "recordCount": 30,
   "regulatoryAuthorityCount": 30,
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -10,14 +10,14 @@
     {
       "path": "/data/keno-games.csv",
       "mediaType": "text/csv; charset=utf-8",
-      "bytes": 19608,
-      "sha256": "393525dc1ccc7df66cb1db3cc4e619b5e9138ce8c377275aedafb095c17b4c5e"
+      "bytes": 20819,
+      "sha256": "4700140deabf399caf08dc85f527364569134cfb8a3e100f3a65df22a148b8c6"
     },
     {
       "path": "/data/keno-games.json",
       "mediaType": "application/json",
-      "bytes": 362603,
-      "sha256": "db5014dcb132fbcf6c60e0f010792ef2a647314c73bd7f76c6bf61129022ab7a"
+      "bytes": 479287,
+      "sha256": "a7f8fbd11761bd81df004bc1b0c2e7b45fce7dc901d308614d6d9135355d7460"
     },
     {
       "path": "/data/keno-games.schema.json",
